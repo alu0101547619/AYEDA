@@ -10,42 +10,48 @@
 #pragma once
 #include "BigUnsigned.h"
 
+template <unsigned char Base>
 class BigInteger {
  public:
   // Getter
-  BigUnsigned getNumber() const; 
-  bool getSign() const; 
+  BigUnsigned<Base> getNumber() const;  // Obtiene el valor absoluto
+  bool getSign() const;
 
   // Constructorea
   BigInteger(int n = 0);
-  BigInteger(const BigUnsigned&); // Constructor de cambio de tipo
+  BigInteger(const BigUnsigned<Base>&); // Constructor de cambio de tipo
 
   // Asignación
-  BigInteger& operator=(const BigInteger&);
+  BigInteger& operator=(const BigInteger<Base>&);
 
   // Operadores inserción y extracción
+  template <unsigned char B>
   friend ostream& operator<<(ostream&, const BigInteger&); // Inserción de flujo
+  template <unsigned char B>
   friend istream& operator>>(istream&, BigInteger&); // Extracción de flujo
   
-  // Comparación
-  bool operator==(const BigInteger&) const;
-  friend bool operator<(const BigInteger&, const BigInteger&);
+  // Operadores de comparación
+  bool operator==(const BigInteger<Base>&) const;
+  bool operator<(const BigInteger<Base>&) const;
 
   // Incremento/Decremento
-  BigInteger& operator++(); // Pre-incremento
-  BigInteger operator++(int); // Post-incremento
-  BigInteger& operator--(); // Pre-decremento
-  BigInteger operator--(int); // Post-decremento
+  // BigInteger& operator++(); // Pre-incremento
+  // BigInteger operator++(int); // Post-incremento
+  // BigInteger& operator--(); // Pre-decremento
+  // BigInteger operator--(int); // Post-decremento
   
   // Operadores aritméticos
-  friend BigInteger operator+(const BigInteger&, const BigInteger&);
-  BigInteger operator-(const BigInteger&) const;
-  BigInteger operator*(const BigInteger&) const;
-  friend  BigInteger operator/(const BigInteger&, const BigInteger&);
-  BigInteger operator%(const BigInteger&) const;
+  BigInteger<Base> operator+(const BigInteger<Base>&) const;
+  BigInteger<Base> operator-(const BigInteger<Base>&) const;
+  BigInteger<Base> operator*(const BigInteger<Base>&) const;
+  BigInteger<Base> operator/(const BigInteger<Base>&) const;
+  BigInteger<Base> operator%(const BigInteger<Base>&) const;
 
-  // Opradores insertar y extraer en flujo
- private:
-  BigUnsigned number_;
-  bool sign_;
+  BigInteger<10> convertirDecimal() const;
+ 
+  private:
+    BigUnsigned<Base> number_;  // El número sin signo
+    bool sign_;  // El signo del número (true para negativo, false para positivo)
 };
+
+#include "BigInteger.tpp"

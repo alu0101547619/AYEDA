@@ -1,6 +1,6 @@
 all: mcd
 
-mcd: mcd_main.o mcd.o BigInteger.o BigUnsigned.o
+mcd: mcd_main.o
 	g++ $^ -o $@
 
 %.o: %.cc

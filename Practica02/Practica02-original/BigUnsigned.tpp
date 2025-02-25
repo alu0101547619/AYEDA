@@ -17,7 +17,6 @@
  */
 template <unsigned char Base>
 BigUnsigned<Base>::BigUnsigned(unsigned n) {
-  std::cout << "NO\n";
   number_.clear();
   if (n == 0) {
     number_.push_back(0);
@@ -32,7 +31,6 @@ BigUnsigned<Base>::BigUnsigned(unsigned n) {
 // constructor
 template <unsigned char Base>
 BigUnsigned<Base>::BigUnsigned(const unsigned char* number) {
-  std::cout << "NO\n";
   number_.clear();
   string str(reinterpret_cast<const char*>(number));
 
@@ -48,7 +46,7 @@ BigUnsigned<Base>::BigUnsigned(const unsigned char* number) {
     } else {
       throw invalid_argument("Número contiene dígitos inválidos para la base especificada.");
     }
-
+    
     if (digit >= Base) {
       throw invalid_argument("Dígito inválido para la base especificada.");
     }
@@ -267,28 +265,4 @@ BigUnsigned<10> BigUnsigned<Base>::convertirDecimal() const {
   }
   return resultado;
 }
-
-template <unsigned char Base>
-BigUnsigned<Base> BigUnsigned<Base>::convertirBase(unsigned char nuevaBase) const {
-
-  // Convertimos primero a decimal si la base no es 10
-  BigUnsigned<10> temp = this->convertirDecimal();
-  BigUnsigned<Base> resultado;  
-  resultado.number_.clear();
-
-  BigUnsigned<Base> cero;
-  while (!(temp == cero)) {
-    BigUnsigned<10> digito = temp % BigUnsigned<10>(nuevaBase);
-    resultado.number_.push_back(digito.number_[0]); // Agregar dígito
-    temp = temp / BigUnsigned<10>(nuevaBase);
-  }
-
-  if (resultado.number_.empty()) {
-    resultado.number_.push_back(0);
-  }
-
-  return resultado;
-}
-
-
 

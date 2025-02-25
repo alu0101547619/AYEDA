@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <algorithm> 
 
 using namespace std;
 
@@ -46,7 +47,8 @@ class BigUnsigned {
   BigUnsigned operator%(const BigUnsigned&) const;
 
   BigUnsigned<10> convertirDecimal() const;
-  BigUnsigned<Base> convertirBase(unsigned char base) const;
+
+  const vector<unsigned char>& getNumber() const { return number_; }
 
  private:
   std::vector<unsigned char> number_;
