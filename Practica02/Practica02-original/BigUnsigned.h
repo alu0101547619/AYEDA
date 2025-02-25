@@ -5,7 +5,7 @@
 // Pr ́actica 1: algoritmo y estructura de datos avanzada
 // Autor: Adrián Martín Castellano
 // Correo: alu0101547619@ull.edu.es
-// Fecha: 12/02/2025
+// Fecha: 25/02/2025
 
 #pragma once
 

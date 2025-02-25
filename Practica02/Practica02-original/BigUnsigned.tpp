@@ -2,10 +2,10 @@
 // Escuela Superior de Ingenier ́ıa y Tecnolog ́ıa
 // Grado en Ingenier ́ıa Inform ́atica
 // Curso: 2º
-// Pr ́actica 1: algoritmo y estructura de datos avanzada
+// Pr ́actica 2: algoritmo y estructura de datos avanzada
 // Autor: Adrián Martín Castellano
 // Correo: alu0101547619@ull.edu.es
-// Fecha: 12/02/2025
+// Fecha: 25/02/2025
 
 #pragma once
 
@@ -31,28 +31,29 @@ BigUnsigned<Base>::BigUnsigned(unsigned n) {
 // constructor
 template <unsigned char Base>
 BigUnsigned<Base>::BigUnsigned(const unsigned char* number) {
-  number_.clear();
-  string str(reinterpret_cast<const char*>(number));
-
-  for (int i = str.size() - 1; i >= 0; i--) {
-    unsigned char digit;
-
-    if (str[i] >= '0' && str[i] <= '9') {
-      digit = str[i] - '0';
-    } else if (Base > 10 && str[i] >= 'A' && str[i] <= 'F') {
-      digit = str[i] - 'A' + 10;
-    } else if (Base > 10 && str[i] >= 'a' && str[i] <= 'f') {
-      digit = str[i] - 'a' + 10;
-    } else {
-      throw invalid_argument("Número contiene dígitos inválidos para la base especificada.");
+    number_.clear();
+    string str(reinterpret_cast<const char*>(number));
+    bool isNegative = false;
+    if (str[0] == '-') {
+        isNegative = true; 
+        str = str.substr(1);
     }
-    
-    if (digit >= Base) {
-      throw invalid_argument("Dígito inválido para la base especificada.");
-    }
-
-    number_.push_back(digit);
-  }
+    for (int i = str.size() - 1; i >= 0; i--) {
+        unsigned char digit;
+        if (str[i] >= '0' && str[i] <= '9') {
+            digit = str[i] - '0';
+        } else if (Base > 10 && str[i] >= 'A' && str[i] <= 'F') {
+            digit = str[i] - 'A' + 10;
+        } else if (Base > 10 && str[i] >= 'a' && str[i] <= 'f') {
+            digit = str[i] - 'a' + 10;
+        } else {
+            throw invalid_argument("Número contiene dígitos inválidos para la base especificada.");
+        }
+        if (digit >= Base) {
+            throw invalid_argument("Dígito inválido para la base especificada.");
+        }
+        number_.push_back(digit);
+    }  
 }
 
 // constructor de copia
@@ -228,16 +229,26 @@ BigUnsigned<Base> BigUnsigned<Base>::operator*(const BigUnsigned<Base>& other) c
  * @return BigUnsigned División de los números
  */
 template <unsigned char Base>
-BigUnsigned<Base> BigUnsigned<Base>::operator/(const BigUnsigned& n1) const {
-  if (n1 == BigUnsigned()) return BigUnsigned();
-  BigUnsigned quotient;
-  BigUnsigned remainder = *this;
-  while (!(remainder < n1)) {
-    remainder = remainder - n1;
-    quotient = quotient + BigUnsigned<Base>(1);
+BigUnsigned<Base> BigUnsigned<Base>::operator/(const BigUnsigned<Base>& divisor) const {
+  if (divisor == BigUnsigned<Base>()) {
+    throw std::runtime_error("Error: División por 0 en BigUnsigned::operator/");
   }
+  BigUnsigned<Base> quotient;
+  BigUnsigned<Base> remainder;
+  for (int i = this->getNumber().size() - 1; i >= 0; i--) {
+    remainder = remainder * Base + this->getNumber()[i];
+    BigUnsigned<Base> q;
+    while (!(remainder < divisor)) {
+      remainder = remainder - divisor;
+      q = q + BigUnsigned<Base>(1);
+    }
+
+     quotient = quotient * Base + q;
+  }
+
   return quotient;
 }
+
 
 /**
  * @brief Sobrecarga del operador de módulo
@@ -265,4 +276,3 @@ BigUnsigned<10> BigUnsigned<Base>::convertirDecimal() const {
   }
   return resultado;
 }
-

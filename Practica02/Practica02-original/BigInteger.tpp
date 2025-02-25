@@ -2,19 +2,21 @@
 // Escuela Superior de Ingenier ́ıa y Tecnolog ́ıa
 // Grado en Ingenier ́ıa Inform ́atica
 // Curso: 2º
-// Pr ́actica 1: algoritmo y estructura de datos avanzada
+// Pr ́actica 2: algoritmo y estructura de datos avanzada
 // Autor: Adrián Martín Castellano
 // Correo: alu0101547619@ull.edu.es
-// Fecha: 12/02/2025
+// Fecha: 25/02/2025
 
 #pragma once
 #include "BigInteger.h"
 
+// Getter
 template <unsigned char Base>
 BigUnsigned<Base> BigInteger<Base>::getNumber() const {
     return number_;
 } 
 
+// Getter
 template <unsigned char Base>
 bool BigInteger<Base>::getSign() const {
     return sign_;
@@ -207,7 +209,7 @@ template <unsigned char Base>
 BigInteger<Base> BigInteger<Base>::operator*(const BigInteger<Base>& number) const {
   BigInteger result(0);
   result.number_ = number_ * number.number_;
-  BigUnsigned<10> cero;
+  BigUnsigned<Base> cero;
   if (result.number_ == cero) result.sign_ = false;
   else result.sign_ = (sign_ != number.sign_);
   return result;
@@ -221,21 +223,23 @@ BigInteger<Base> BigInteger<Base>::operator*(const BigInteger<Base>& number) con
  */
 template <unsigned char Base>
 BigInteger<Base> BigInteger<Base>::operator/(const BigInteger<Base>& number2) const {
-  BigInteger<Base> result;
-  const BigInteger<Base> cero;
-  if (this->number_ == cero.getNumber()) {
+    BigInteger<Base> result;
+    const BigInteger<Base> cero;
+    if (this->number_ == cero.getNumber()) {
+        return result;
+    }
+    bool result_sign = (sign_ != number2.sign_);
+    BigUnsigned<Base> dividend = number_;
+    BigUnsigned<Base> divisor = number2.number_;
+    if (divisor == BigUnsigned<Base> ()) {
+        throw std::runtime_error("Error: División por 0 en BigInteger::operator/");
+    }
+    result.number_ = dividend / divisor; 
+    BigUnsigned<Base> cero_;
+    result.sign_ = !(result.number_ == cero_) && result_sign;
     return result;
-  }
-
-  bool result_sign = (sign_ != number2.sign_);
-  BigUnsigned<Base> dividend = number_;
-  BigUnsigned<Base> divisor = number2.number_;
-  result.number_ = dividend / divisor;
-  BigUnsigned<Base> cero_;
-  result.sign_ = !(result.number_ == cero_) && result_sign;
-
-  return result;
 }
+
 
 /**
  * @brief Sobrecarga del operador de módulo
@@ -258,34 +262,27 @@ BigInteger<Base> BigInteger<Base>::operator%(const BigInteger<Base>& number) con
   return result;
 }
 
+/**
+ * @brief Convierte el número de la base actual a base 10.
+ * @tparam Base La base en la que está representado el número original.
+ * @return BigInteger<10> Número convertido a base 10.
+ */
 template <unsigned char Base>
 BigInteger<10> BigInteger<Base>::convertirDecimal() const {
-    // Crear un número BigUnsigned<10> para almacenar el resultado
     BigUnsigned<10> resultado;
     BigUnsigned<10> cero;
-    resultado = cero;  // Iniciar el resultado en 0
-    
-    // Obtener el número absoluto como BigUnsigned<Base>
-    const vector<unsigned char>& number = number_.getNumber();  // Acceder al número con el getter
-
-    BigUnsigned<10> baseActual(1);  // Variable que representa la base actual (1, Base, Base^2, etc.)
-
-    // Iterar sobre los dígitos de la representación en base 'Base'
+    resultado = cero;  
+    const vector<unsigned char>& number = number_.getNumber();
+    BigUnsigned<10> baseActual(1); 
     for (size_t i = 0; i < number.size(); i++) {
-        unsigned char digit = number[i];  // Obtener el dígito actual usando el getter
-        // Sumar al resultado el valor del dígito multiplicado por la potencia de la base
+        unsigned char digit = number[i];
         resultado = resultado + (BigUnsigned<10>(digit) * baseActual);
-        // Multiplicar la base actual por la base
         baseActual = baseActual * BigUnsigned<10>(Base);
     }
-
-    // Si el signo es negativo, convertir el resultado a negativo
     if (sign_) {
-        // Aquí puedes usar el constructor BigInteger<Base>(resultado) para crear un BigInteger negativo
-        BigInteger<10> negativo(resultado);  // Convertimos BigUnsigned<10> a BigInteger<10>
+        BigInteger<10> negativo(resultado);  
         return negativo;
     } else {
-        return BigInteger<10>(resultado);  // Devolvemos el resultado positivo
+        return BigInteger<10>(resultado); 
     }
 }
-

@@ -5,7 +5,7 @@
 // Práctica 2: algoritmo y estructura de datos avanzada
 // Autor: Adrián Martín Castellano
 // Correo: alu0101547619@ull.edu.es
-// Fecha: 12/02/2025
+// Fecha: 25/02/2025
 
 #pragma once
 #include "BigUnsigned.h"
@@ -34,14 +34,15 @@ class BigRational {
     bool operator==(const BigRational<Base>&) const;
     bool operator<(const BigRational<Base>&) const;
   
-    // // Operadores aritméticos
-    // BigInteger<Base> operator+(const BigInteger<Base>&) const;
-    // BigInteger<Base> operator-(const BigInteger<Base>&) const;
-    // BigInteger<Base> operator*(const BigInteger<Base>&) const;
-    // BigInteger<Base> operator/(const BigInteger<Base>&) const;
-    // BigInteger<Base> operator%(const BigInteger<Base>&) const;
+    // Operadores aritméticos
+    BigRational<Base> operator+(const BigRational<Base>&) const;
+    BigRational<Base> operator-(const BigRational<Base>&) const;
+    BigRational<Base> operator*(const BigRational<Base>&) const;
+    BigRational<Base> operator/(const BigRational<Base>&) const;
   
     BigRational<10> convertirDecimal() const;
+    BigUnsigned<Base> mcd(const BigUnsigned<Base>&, const BigUnsigned<Base>&);
+    BigRational<Base> simplificar();
    
   private:
     BigInteger<Base> num_;  // numerador que puede tener signo
