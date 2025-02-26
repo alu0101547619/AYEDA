@@ -33,11 +33,10 @@ template <unsigned char Base>
 BigUnsigned<Base>::BigUnsigned(const unsigned char* number) {
     number_.clear();
     string str(reinterpret_cast<const char*>(number));
-    bool isNegative = false;
     if (str[0] == '-') {
-        isNegative = true; 
         str = str.substr(1);
     }
+
     for (int i = str.size() - 1; i >= 0; i--) {
         unsigned char digit;
         if (str[i] >= '0' && str[i] <= '9') {

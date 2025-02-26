@@ -7,6 +7,8 @@
 // Correo: alu0101547619@ull.edu.es
 // Fecha: 25/02/2025
 
+bool isNegative = false;
+
 #include "BigUnsigned.h"
 #include "BigInteger.h"
 #include "BigRational.h"

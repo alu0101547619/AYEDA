@@ -38,7 +38,8 @@ BigInteger<Base>::BigInteger(int number) {
 template <unsigned char Base>
 BigInteger<Base>::BigInteger(const BigUnsigned<Base>& number) {
   number_ = number; 
-  sign_ = false; 
+  if (isNegative) sign_ = true;
+  else sign_ = false; 
 }
 
 
