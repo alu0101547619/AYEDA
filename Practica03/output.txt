@@ -1,0 +1,13 @@
+Base = 8
+N1 = 7652/430
+N2 = -416/5125
+N1 simplificado = 401/28
+N2 simplificado = -54/529
+N1 == N2 = False
+N1 < N2 = False
+N1 + N2 = 210617/14812
+N1 - N2 = 213641/14812
+N1 * N2 = -10827/7406
+N1 / N2 = 212129/1512
+Conversion = 621/34
+Conversion = -66/1021
