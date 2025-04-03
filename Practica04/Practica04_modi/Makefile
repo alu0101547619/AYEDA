@@ -1,6 +1,6 @@
 all: hash
 
-mcd: main-hash.o Nif.cc
+hash: main-hash.o Nif.cc PersonalUll.cc
 	g++ $^ -o $@
 
 %.o: %.cc
