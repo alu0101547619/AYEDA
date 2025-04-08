@@ -8,8 +8,13 @@ class ShellSort : public SortMethod<Key> {
     ShellSort(StaticSequence<Key>& sequence, double alpha = 0.5) : SortMethod<Key>(sequence), alpha_(alpha) {}
     void Sort() override;
     void Deltasort(int delta, unsigned n);
+    int get_comp() const { return comp_; }
+    int get_swap() const { return swap_; }
+   
   private:
     double alpha_;
+    int comp_ = 0;
+    int swap_ = 0;
 };
 
 template <class Key>
@@ -17,6 +22,7 @@ void ShellSort<Key>::Sort() {
   unsigned n = this->sequence_.size();
   int delta = n;
   while (delta > 1) {
+    comp_++;
     delta = static_cast<int>(delta * alpha_);
     if (delta < 1) delta = 1;
     Deltasort(delta, n);
@@ -30,6 +36,8 @@ void ShellSort<Key>::Deltasort(int delta, unsigned n) {
     Key x = this->sequence_[i];
     int j = i;
     while (j >= delta && x < this->sequence_[j - delta]) {
+      comp_++;
+      swap_++;
       this->sequence_[j] = this->sequence_[j - delta];
       j -= delta;
     }

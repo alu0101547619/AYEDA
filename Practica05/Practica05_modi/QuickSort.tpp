@@ -9,6 +9,12 @@ class QuickSort : public SortMethod<Key> {
     QuickSort(StaticSequence<Key>& sequence) : SortMethod<Key>(sequence) {}
     void Sort() override;
     void Qsort(unsigned ini, unsigned fin);
+    int get_comp() const { return comp_; }
+    int get_swap() const { return swap_; }
+
+  private:
+    int comp_ = 0;
+    int swap_ = 0;
 };
 
 template <class Key>
@@ -20,12 +26,21 @@ template <class Key>
 void QuickSort<Key>::Qsort(unsigned ini, unsigned fin) {
   unsigned i = ini;
   unsigned f = fin;
-  Nif p = this->sequence_[(i + f) / 2];
+  Key p = this->sequence_[(i + f) / 2];
   while (i <= f) {
-    while (this->sequence_[i] < p) i++;
-    while (this->sequence_[f] > p) f--;
+    comp_++;
+    while (this->sequence_[i] < p) {
+      i++;
+      comp_++;
+    }
+    while (this->sequence_[f] > p) {
+      f--;
+      comp_++;
+    }
     if (i <= f) {
       std::swap(this->sequence_[i], this->sequence_[f]);
+      swap_++;
+      comp_++;
       i++;
       f--;
     }
@@ -37,6 +52,12 @@ void QuickSort<Key>::Qsort(unsigned ini, unsigned fin) {
     }
     std::cout << "\n";
   }
-  if (ini < f) Qsort(ini, f);
-  if (i < fin) Qsort(i, fin);
+  if (ini < f) {
+    comp_++;
+    Qsort(ini, f);
+  }
+  if (i < fin) {
+    comp_++;
+    Qsort(i, fin);
+  }
 }

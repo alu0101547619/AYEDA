@@ -7,6 +7,13 @@ class Insertion : public SortMethod<Key> {
  public:
   Insertion(StaticSequence<Key>& sequence) : SortMethod<Key>(sequence) {}
   void Sort() override;
+
+  int get_comp() const { return comp_; }
+  int get_swap() const { return swap_; }
+
+  private:
+    int comp_ = 0;
+    int swap_ = 0;
 };
 
 template <class Key>
@@ -16,7 +23,9 @@ void Insertion<Key>::Sort() {
     Key x = this->sequence_[i];
     int j = i;
     while (j > 0 && x < this->sequence_[j - 1]) {
+      comp_++;
       this->sequence_[j] = this->sequence_[j - 1];
+      swap_++;
       j--;
     }
     this->sequence_[j] = x;

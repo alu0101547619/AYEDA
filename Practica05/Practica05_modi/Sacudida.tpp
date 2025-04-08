@@ -7,6 +7,12 @@ class Sacudida : public SortMethod<Key> {
   public:
     Sacudida(StaticSequence<Key>& sequence) : SortMethod<Key>(sequence) {}
     void Sort() override;
+    int get_comp() const { return comp_; }
+    int get_swap() const { return swap_; }
+
+  private:
+    int comp_ = 0;
+    int swap_ = 0;
 };
 
 template <class Key>
@@ -15,9 +21,12 @@ void Sacudida<Key>::Sort() {
   unsigned fin = this->sequence_.size() - 1; 
   unsigned cam = this->sequence_.size();
   while (ini < fin){
+    comp_++;
     for (unsigned j = fin; j >= ini; j--)
       if (this->sequence_[j] < this->sequence_[j - 1]) {
+        comp_++;
         std::swap(this->sequence_[j - 1], this->sequence_[j]);
+        swap_++;
         cam = j;
       } 
       if (this->trace_) {
@@ -30,7 +39,9 @@ void Sacudida<Key>::Sort() {
     ini = cam + 1;
     for (unsigned j = ini; j <= fin; j++)
       if (this->sequence_[j] < this->sequence_[j - 1]) {
+        comp_++;
         std::swap(this->sequence_[j - 1], this->sequence_[j]);
+        swap_++;
         cam = j;
       } 
       if (this->trace_) {

@@ -134,7 +134,7 @@ int main(int argc, char* argv[]) {
       return 1;
     }
 
-    // if (trace) sorter->set_trace(true);
+    if (trace) sorter->set_trace(true);
 
     sorter->Sort();
  
